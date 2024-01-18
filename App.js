@@ -1,20 +1,37 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { PaperProvider } from "react-native-paper";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import BottomTabNavigation from "./navigation/BottomTabNavigation";
+import ProductDetails from "./screens/product/ProductDetails";
+import Checkout from "./screens/checkout/Checkout";
+import { Provider } from "react-redux";
+import { store } from "./redux/store";
+
+const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <PaperProvider>
+      <Provider store={store}>
+        <SafeAreaProvider>
+          <NavigationContainer>
+            <Stack.Navigator
+              screenOptions={{
+                headerShown: false,
+              }}
+              initialRouteName="Home"
+            >
+              <Stack.Screen
+                name="BottomTabNavigation"
+                component={BottomTabNavigation}
+              />
+              <Stack.Screen name="ProductDetails" component={ProductDetails} />
+              <Stack.Screen name="Checkout" component={Checkout} />
+            </Stack.Navigator>
+          </NavigationContainer>
+        </SafeAreaProvider>
+      </Provider>
+    </PaperProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
